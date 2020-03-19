@@ -1,0 +1,27 @@
+<%- include('partials/header') %> 
+
+
+<div class="container" style="width: 500px;">
+    <h1>Create new Campground</h1>
+    <form action="/campgrounds", method="POST" >
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input class="form-control" type="text" name="name" placeholder="Name" >
+        </div>
+        <div class="form-group">
+            <label for="image">Image</label>
+            <input class="form-control" type="text" name="image" placeholder="Image URL">
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <p>
+                <textarea name="description" id="" rows="10" class="form-control" placeholder="Type something !"></textarea>
+            </p>
+        </div>
+        
+        <button type="submit" class="btn btn-default btn-block btn-primary">Submit</button>
+    </form>
+</div>
+
+
+<%- include('partials/footer') %> 
