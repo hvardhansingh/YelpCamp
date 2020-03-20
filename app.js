@@ -1,46 +1,16 @@
 var express         = require('express'),
     app             = express(),
     bodyParser      = require('body-parser'),
-    mongoose        = require('mongoose');
+    mongoose        = require('mongoose'),
+    Campground      = require('./models/campgrounds'),
+    Comment         = require('./models/comments'),
+    seedDB          = require('./seeds');
 
 mongoose.connect('mongodb://localhost/yelp_camp');
-
-var campgroundSchema = new mongoose.Schema({
-    name: String,
-    image: String,
-    description: String
-});
-
-var Campground = mongoose.model('Campground', campgroundSchema);
-
-// Campground.create({
-//     name: "mardi himal", 
-//     image: "http://bit.ly/38XPWiW",
-//     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-//     }, function(err, campground){
-//         if(err){
-//             console.log('Something Went Wrong');
-//         }
-//         else
-//         {
-//             console.log(campground);
-//         }
-// });
-
-app.use(bodyParser.urlencoded({extended:true}));
 app.set('view engine', 'ejs');
-
-// var camps = [
-//     {name: "ABC", image: "http://bit.ly/2SaoFD7"},
-//     {name: "mardi himal".toUpperCase(), image:"http://bit.ly/38XPWiW"},
-//     {name: "everest".toUpperCase(), image:"http://bit.ly/2u2Mh4N"},
-//     {name: "ABC", image: "http://bit.ly/2SaoFD7"},
-//     {name: "mardi himal".toUpperCase(), image:"http://bit.ly/38XPWiW"},
-//     {name: "everest".toUpperCase(), image:"http://bit.ly/2u2Mh4N"},
-//     {name: "ABC", image: "http://bit.ly/2SaoFD7"},
-//     {name: "mardi himal".toUpperCase(), image:"http://bit.ly/38XPWiW"},
-//     {name: "everest".toUpperCase(), image:"http://bit.ly/2u2Mh4N"}
-// ];
+app.use(express.static('public'));
+app.use(bodyParser.urlencoded({ extended: true }));
+seedDB();
 
 app.get('/', function(req, res){
     res.render('landing');
@@ -48,7 +18,7 @@ app.get('/', function(req, res){
 
 app.get('/campgrounds', function(req, res){
     Campground.find({}, function(err, campgrounds){
-        res.render('campgrounds', {campgrounds:campgrounds});
+        res.render('campgrounds/index', {campgrounds:campgrounds});
     });
 });
 
@@ -72,21 +42,58 @@ app.post('/campgrounds', function(req, res){
 });
 
 app.get('/campgrounds/new', function(req, res){
-    res.render('newCampground.ejs');
+    res.render('campgrounds/new.ejs');
 });
 
 app.get('/campgrounds/:id', function(req, res){
 
-    Campground.findById(req.params.id, function(err, foundCampground){
+    Campground.findById(req.params.id).populate('comments').exec(function(err, foundCampground){
         if(err){
             console.log('Something went wrong in findById !');
         }
         else{
-            res.render('show', {campground:foundCampground});
+            console.log(foundCampground);
+            res.render('campgrounds/show', {campground:foundCampground});
         }
     });
 
     // res.render('show');
+});
+
+app.get('/campgrounds/:id/comments/new', function(req, res){
+    Campground.findById(req.params.id, function(err, campground){
+        if(err){
+            console.log(err);
+        }
+        else{
+            res.render('comments/new', {campground: campground});
+        }
+    });
+});
+
+app.post('/campgrounds/:id/comments', function(req, res){
+    Campground.findById(req.params.id, function(err, campground){
+        if(err){
+            console.log(err);
+        }
+        else{
+            console.log(req.body.comment);
+
+            Comment.create(req.body.comment, function(err, comment){
+                if(err){
+                    console.log(err);
+                }
+                else{
+                    console.log('comment added');
+                    campground.comments.push(comment);
+                    campground.save();
+                    res.redirect('/campgrounds/'+ campground._id);
+                }
+            });
+            // res.redirect('/campgrounds');
+            // 
+        }
+    });
 });
 
 app.listen(3000, function(){
