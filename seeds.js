@@ -27,29 +27,29 @@ function seedDB(){
         }
         else{
             console.log('Campgrounds Removed !');
-            data.forEach(function(camp){
-                Campground.create(camp, function(err, camp){
-                    if(err){
-                        console.log(err);
-                    }
-                    else{
-                        console.log('ADDED CAMPGROUND !');
-                        Comment.create({
-                            text: 'This is a beautiful place to visit !',
-                            author: 'Vardhan'
-                        }, function(err, comment){
-                            if(err){
-                                console.log(err);
-                            }
-                            else{
-                                camp.comments.push(comment);
-                                camp.save();
-                                console.log('Comment added');
-                            }
-                        }); 
-                    }
-                });
-            });
+            // data.forEach(function(camp){
+            //     Campground.create(camp, function(err, camp){
+            //         if(err){
+            //             console.log(err);
+            //         }
+            //         else{
+            //             console.log('ADDED CAMPGROUND !');
+            //             Comment.create({
+            //                 text: 'This is a beautiful place to visit !',
+            //                 author: 'Vardhan'
+            //             }, function(err, comment){
+            //                 if(err){
+            //                     console.log(err);
+            //                 }
+            //                 else{
+            //                     camp.comments.push(comment);
+            //                     camp.save();
+            //                     console.log('Comment added');
+            //                 }
+            //             }); 
+            //         }
+            //     });
+            // });
         }
     });
 
