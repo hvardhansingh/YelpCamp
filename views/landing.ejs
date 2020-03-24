@@ -1,4 +1,41 @@
-<%- include('partials/header') %>
-<h1>This is the landing page template </h1>
-<a class="btn btn-primary" href="/campgrounds">See All campgrounds</a>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>YelpCamp</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/stylesheets/landing.css">
+    </head>
+    <body>      
+                <div class="container alert-container">
+                    <% if(error && error.length>0){ %>
+                    <div class="alert alert-danger" role="alert">
+                        <%= error%>
+                    </div>
+                    <% } %>
+                    <% if(success && success.length>0){ %>
+                    <div class="alert alert-success" role="alert">
+                        <%= success%>
+                    </div>
+                    <% } %>
+                </div>
+                <div id="landing-header">
+                    <h1>Welcome to YelpCamp!</h1>
+                    <p>
+                        <a href="/campgrounds" class="btn btn-lg btn-success">View All Campgrounds</a>
+                    </p>
+                   <p>
+                        <a href="/login" class="btn btn-primary" style="font-size: 1.2em;"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a>
+                        <a href="/register" class="btn btn-primary" style="font-size: 1.2em;"><i class="fa fa-user-plus"></i> Sign Up</a>
+                   </p>
+                </div>
+                
+                <ul class="slideshow">
+                 <li></li>
+                 <li></li>
+                 <li></li>
+                 <li></li>
+                 <li></li>
+                </ul>
+                
 <%- include('partials/footer') %>

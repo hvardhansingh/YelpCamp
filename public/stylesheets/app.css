@@ -2,6 +2,10 @@
     margin-bottom: 50px;
 }
 
+.alert-container{
+    margin-bottom: 0px;
+}
+
 .thumbnail img{
     width: 100%;
 }

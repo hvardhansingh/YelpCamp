@@ -14,6 +14,7 @@ router.get('/', function (req, res) {
     });
 });
 
+// CREATE 
 router.post('/', middleware.isLoggedIn, function (req, res) {
     var name = req.body.name;
     var image = req.body.image;
@@ -36,8 +37,7 @@ router.post('/', middleware.isLoggedIn, function (req, res) {
             // console.log(camp);
         }
     });
-
-    res.redirect('/campgrounds');
+    res.render('campgrounds/index');
 });
 
 router.get('/new', middleware.isLoggedIn, function (req, res) {
